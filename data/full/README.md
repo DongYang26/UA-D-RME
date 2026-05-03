@@ -61,7 +61,7 @@ You should see a roughly 12:1:1 train/val/test split across approximately
 
 ## Provenance
 
-The dataset is derived from the RadioMapSeer simulator and partitioned into
+The dataset is derived from the [RadioMapSeer](https://radiomapseer.github.io/) simulator and partitioned into
 8-agent decentralized scenes with a fixed grid communication topology. The
 generation pipeline lives in the parent multi-agent research codebase and is
 out of scope for this release; only the consumer-side artifacts are shipped.
