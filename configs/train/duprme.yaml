@@ -1,0 +1,62 @@
+model:
+  coord_dim: 2
+  hidden_dim: 256
+  anchor_dim: 128
+
+trainer:
+  seed: 42
+  output_dir: artifacts/train/duprme
+  epochs: 1000
+  lr: 0.0001
+  weight_decay: 0.0
+  batch_size: 1
+  num_workers: 0
+  accelerator: gpu
+  devices: 8
+  strategy: ddp_find_unused_parameters_true
+  precision: 16-mixed
+  env:
+    NCCL_P2P_DISABLE: "1"
+    NCCL_IB_DISABLE: "1"
+    CUDA_DEVICE_MAX_CONNECTIONS: "1"
+  checkpoint:
+    enabled: true
+    monitor: val/total_loss
+    mode: min
+    save_top_k: 1
+    save_last: true
+  early_stopping:
+    enabled: true
+    monitor: val/total_loss
+    mode: min
+    patience: 10
+    min_delta: 0.0
+
+graph:
+  num_agents: 8
+  graph_edges:
+    - [0, 1]
+    - [0, 4]
+    - [1, 2]
+    - [1, 5]
+    - [2, 3]
+    - [2, 6]
+    - [3, 7]
+    - [4, 5]
+    - [5, 6]
+    - [6, 7]
+
+losses:
+  local: 1.0
+  overlap: 1.0
+  uncertainty: 1.0
+
+codec:
+  mode: none
+
+data:
+  node_manifest_path: data/full/local_node_manifest.parquet
+  edge_manifest_path: data/full/edge_overlap_manifest.parquet
+  data_root: null
+  train_split: train
+  val_split: val

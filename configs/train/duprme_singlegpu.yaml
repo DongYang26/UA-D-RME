@@ -1,0 +1,71 @@
+# Single-GPU smoke / reviewer-runnable configuration.
+#
+# Intentionally conservative:
+#   * 1 GPU, no DDP, no mixed precision -> deterministic and OOM-safe on 12 GB cards.
+#   * batch_size: 1 is REQUIRED (LightningDecentralizedRMEDataModule rejects other values).
+#   * num_workers: 0 keeps everything in the main process (no multiprocessing init).
+#   * Smaller hidden/anchor dims so the smoke run completes quickly even on a slow GPU.
+#   * 5 epochs is enough to exercise train + val + checkpoint paths without long runtime.
+#
+# IMPORTANT: numerical values here will NOT match the 8-GPU DDP run in duprme.yaml.
+# This config is only intended to prove the pipeline runs end-to-end.
+model:
+  coord_dim: 2
+  hidden_dim: 64
+  anchor_dim: 32
+
+trainer:
+  seed: 42
+  output_dir: artifacts/train/duprme_singlegpu
+  epochs: 5
+  lr: 0.0001
+  weight_decay: 0.0
+  batch_size: 1
+  num_workers: 0
+  pin_memory: false
+  persistent_workers: false
+  accelerator: gpu
+  devices: 1
+  strategy: auto
+  precision: 32-true
+  checkpoint:
+    enabled: true
+    monitor: val/total_loss
+    mode: min
+    save_top_k: 1
+    save_last: true
+  early_stopping:
+    enabled: false
+    monitor: val/total_loss
+    mode: min
+    patience: 10
+    min_delta: 0.0
+
+graph:
+  num_agents: 8
+  graph_edges:
+    - [0, 1]
+    - [0, 4]
+    - [1, 2]
+    - [1, 5]
+    - [2, 3]
+    - [2, 6]
+    - [3, 7]
+    - [4, 5]
+    - [5, 6]
+    - [6, 7]
+
+losses:
+  local: 1.0
+  overlap: 1.0
+  uncertainty: 1.0
+
+codec:
+  mode: none
+
+data:
+  node_manifest_path: data/sample/local_node_manifest.parquet
+  edge_manifest_path: data/sample/edge_overlap_manifest.parquet
+  data_root: null
+  train_split: train
+  val_split: val
