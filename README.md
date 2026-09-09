@@ -111,9 +111,6 @@ Add `--scenes-per-split N` to produce a stratified subsample.
 
 See [`LICENSE`](LICENSE) for the full license text.
 
-## Status
-
-Under review.
 
 ## Contact
 
