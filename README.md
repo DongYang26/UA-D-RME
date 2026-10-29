@@ -115,3 +115,18 @@ See [`LICENSE`](LICENSE) for the full license text.
 ## Contact
 
 For reproduction questions, please contact: dnyang26@gmail.com
+
+
+## Reference
+Please cite the following paper if the codes is useful/inspiring for your research.
+
+```
+@inproceedings{yang2026uncertainty,
+  title={Uncertainty-Aware Distributed Radio Map Estimation in Decentralized Wireless Networks},
+  author={Yang, Dong and Yao, Zhuoyu and Wang, Yue and Zhang, Songyang and Li, Yingshu and Tian, Zhi and Cai, Zhipeng},
+  booktitle={GLOBECOM 2026-2026 IEEE Global Communications Conference},
+  pages={1--6},
+  year={2026},
+  organization={IEEE}
+}
+  ```
